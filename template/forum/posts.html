@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% extends '../base.html' %}
+{% block content %}
+<table>
+<tr>
+<th>user</th>
+<th>/hole</th>
+<th>post</th>
+<th>date</th>
+</tr>
+{% for post in posts %}
+<tr>
+<td>{{post.user.username}}</td>
+<td>/{{post.hole.hole}}</td>
+<td>{{post.post}}</td>
+<td>{{post.creation_datetime}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock content %}

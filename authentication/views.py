@@ -39,7 +39,7 @@ def user_login(request):
             if user.is_active:
                 login(request,user)
                 print('SUCCESSFUL')
-                return HttpResponseRedirect(reverse('loginnn'))
+                return HttpResponseRedirect(reverse('index'))
             else:
                 return HttpResponse('inactive user')
         else:
@@ -51,4 +51,4 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('loginnn'))
+    return HttpResponseRedirect(reverse('index'))
