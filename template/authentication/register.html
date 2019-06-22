@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% extends '../base.html' %}
+
+{% block content %}
+<form method = "POST" enctype = "multipart/form-data">
+{{user_form.as_p}}
+{{portfolio.as_p}}
+<input type = "submit"/>
+{% csrf_token %}
+</form>
+{% endblock content %}

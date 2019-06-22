@@ -1,0 +1,17 @@
+    <!DOCTYPE html>
+{% extends '../base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+loged in 
+{% else %} 
+<form action = "{% url 'loginnn' %}" method = "post">
+<label for "username">Username:</label>
+<input type = "text" name = "username" placeholder = "username"/>
+<label for = "password">Password:</label>
+<input type = "password" name = "password" placeholder = "password" />
+<input type = "submit" value = "login"/>
+{% csrf_token %}
+</form>
+{% endif %}
+
+{% endblock content %}
