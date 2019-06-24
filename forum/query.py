@@ -61,5 +61,8 @@ def create_post(username,hole,post):
 
 # def get_profile(username)
 
-    
-    
+def get_hole_by_name(hole):
+    if Hole.objects.filter(hole = hole).exists() == True:
+        return Hole.objects.get(hole = hole)
+    else:
+        pass # hole dont exists    
