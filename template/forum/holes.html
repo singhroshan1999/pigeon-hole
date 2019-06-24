@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
+{% extends 'forum/post_base.html' %}
 
-{% block content %}
+{% comment %} {% block content %}
 <div class="row">
     <div class="col-md-9">
         <hr />
-        {% comment %} repeat {% endcomment %}
         {% for post in posts %}
         <div class="card">
             <div class="card-header">
@@ -35,7 +34,6 @@
             <div class="card-footer"></div>
         </div>
         {% endfor %}
-        {% comment %} end repeat {% endcomment %}
     </div>
     <div class="col-md-3">
         <hr />
@@ -44,11 +42,15 @@
             {{hole.creation_date}} | <br/>
             <p>{{hole.hole_description}}</p>
         </div>
-        {% comment %} <div class="jumbotron">
-            {% for u in users %}
-            {{u.user.username}}</br>
-            {% endfor %}
-        </div> {% endcomment %}
     </div>
 </div>
-{% endblock content %}
+{% endblock content %} {% endcomment %}
+
+{% block post_base %}
+        <hr />
+        <div class="jumbotron">
+            {{hole.hole}} | <a href = "/forum/u/{{hole.user.username}}">{{hole.user.username}}</a><br/>
+            {{hole.creation_date}} | <br/>
+            <p>{{hole.hole_description}}</p>
+        </div>
+{% endblock post_base %}

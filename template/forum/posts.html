@@ -65,8 +65,8 @@
         </div>
         <div class="jumbotron">
             {% for u in users %}
-            {{u.user.username}}</br>
+            <a href = "/forum/u/{{u.user.username}}">{{u.user.username}}</a></br>
             {% endfor %}
         </div>
-    </div>
+
 {% endblock post_base %}

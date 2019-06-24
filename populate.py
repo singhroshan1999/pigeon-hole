@@ -7,7 +7,7 @@ django.setup()
 
 import random
 from django.contrib.auth.models import User
-from forum.models import Hole,Post
+from forum.models import Hole,Post,PostVoteCount
 from faker import Faker
 from faker import providers
 
@@ -33,8 +33,21 @@ def gen_fake_post():
                             title = fakergen.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None))
 
 def get_post():
-    return Post.objects.all()
-
+    return Post.objects.all()[random.randint(0,99)]
+def gen_random_bool():
+        return [True,False][random.randint(0,1)]
+def gen_fake_votes():
+        for i in range(100):
+                p = get_post()
+                u = get_user()
+                if PostVoteCount.objects.filter(post = p,user = u).exists():
+                        continue
+                else:
+                        PostVoteCount.objects.create(
+                                post = p,
+                                user = u,
+                                is_up = gen_random_bool()
+                        )
 
 # gen_fake_hole()
 # gen_fake_post()

@@ -1,9 +1,9 @@
-from forum.models import Hole,Post
+from forum.models import Hole,Post,HoleFollower,PostVoteCount
 from authentication.models import UserPortfolio
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-def get_post(start = 0,end = 10,user = None,hole = None):
+def get_post(request,start = 0,end = 10,user = None,hole = None):
     post = {}
     if user is None and hole is None:
         post['post'] = Post.objects.filter(reply_id = 0).order_by('-creation_datetime')[start:end]
@@ -20,7 +20,27 @@ def get_post(start = 0,end = 10,user = None,hole = None):
         if Hole.objects.filter(hole = hole).exists():
             hole = Hole.objects.get(hole = hole)
             post['post'] = Post.objects.filter(reply_id = 0,hole = hole).order_by('-creation_datetime')[start:end]
-    return post
+    count = []
+    is_voted = []
+    if User.objects.filter(username = request.user.get_username()).exists():
+        auth_user = User.objects.get(username = request.user.get_username())
+    else:
+        auth_user = None
+    post_new = {'post':[]}
+    for i in post['post']:
+        if PostVoteCount.objects.filter(post = i,user = auth_user).exists():
+            v = PostVoteCount.objects.get(post = i,user = auth_user).is_up
+        else:
+            v = None
+        post_new['post'].append([i,
+                                 PostVoteCount.objects.filter(post = i).count(),
+                                 v])
+        # count.append(PostVoteCount.objects.filter(post = i).count())
+        # is_voted.append(PostVoteCount.objects.filter(post = i,user = auth_user))
+    # post['votes'] = count[:]
+    # post['is_voted'] = is_voted[:]
+    # print(post)
+    return post_new
 
 def get_hole(start = 0,end = 10,user = None,order_by_modified = True):
     hole = {}
@@ -66,3 +86,13 @@ def get_hole_by_name(hole):
         return Hole.objects.get(hole = hole)
     else:
         pass # hole dont exists    
+
+def get_user_by_username(username):
+    if User.objects.filter(username = username).exists():
+        return User.objects.get(username = username)
+    else:
+        pass # user dont exist
+
+# def get_votes_by_post_pk(pk): # list
+# #     votes = PostVoteCount.objects
+# def get_all_post_info(request,)

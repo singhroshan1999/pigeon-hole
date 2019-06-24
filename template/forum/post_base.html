@@ -11,16 +11,16 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-1" style="border:1px solid black">
-                    <a href = "#"><small>up</small></a>
-                    <small>123</small>
-                    <a href = "#"><small>down</small></a>
+                    <small class = "{% if post.2 == True %}text-success {% else %} text-danger{% endif %}">up&nbsp;&nbsp;&nbsp;</small>
+                    <small>{{post.1}}</small>
+                    <small class = "{% if post.2 == False %}text-success {% else %} text-danger{% endif %}">Down&nbsp;&nbsp;&nbsp;</small>
                     </div>
                     <div class="col-md-11">
-                    board:<a href = "/forum/h/{{post.hole.hole}}">{{post.hole.hole}}</a>
-                    &oplus;{{post.user.username}}
-                    &oplus;{{post.creation_datetime}}
+                    board:<a href = "/forum/h/{{post.0.hole.hole}}">{{post.0.hole.hole}}</a>
+                    &oplus;<a href = "/forum/u/{{post.0.user.username}}">{{post.0.user.username}}</a>
+                    &oplus;{{post.0.creation_datetime}}
                     <br/>
-                    <p>{{post.title}}</p>
+                    <p>{{post.0.title}}</p>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-11">
-                        {{post.post}}
+                        {{post.0.post}}
                     </div>
                 </div>
             </div>

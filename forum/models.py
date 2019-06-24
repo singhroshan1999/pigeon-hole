@@ -30,5 +30,13 @@ class HoleFollower(models.Model):
     def __str__(self):
         return self.user + self.hole
     
+class PostVoteCount(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name = 'post_vote')
+    user = models.ForeignKey(User,on_delete = models.CASCADE,related_name = 'user_vote')
+    is_up = models.BooleanField(blank = False)
+    def __str__(self):
+        return str(self.is_up)
+
     
+        
     
