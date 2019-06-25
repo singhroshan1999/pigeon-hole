@@ -35,7 +35,7 @@ def gen_fake_post():
 def get_post():
     return Post.objects.all()[random.randint(0,99)]
 def gen_random_bool():
-        return [True,False][random.randint(0,1)]
+        return [True,True,True][random.randint(0,2)]
 def gen_fake_votes():
         for i in range(100):
                 p = get_post()

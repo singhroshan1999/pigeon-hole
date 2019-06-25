@@ -8,7 +8,7 @@ class Hole(models.Model):
     modified_date = models.DateField( auto_now=True)
     hole_pic = models.ImageField(upload_to = 'hole_pic/',blank = True)
     hole_description = models.TextField(max_length = 1024)
-    is_private = models.BooleanField(default = False)
+    is_private = models.BooleanField(default = False) # TODO
     def __str__(self):
         return self.hole
 

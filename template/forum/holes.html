@@ -49,6 +49,9 @@
 {% block post_base %}
         <hr />
         <div class="jumbotron">
+            {% if hole.hole_pic %}
+                <img src = "{{hole.hole_pic.url}}">                
+            {% endif %}
             {{hole.hole}} | <a href = "/forum/u/{{hole.user.username}}">{{hole.user.username}}</a><br/>
             {{hole.creation_date}} | <br/>
             <p>{{hole.hole_description}}</p>

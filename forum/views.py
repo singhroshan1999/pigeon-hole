@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from forum import query,forms
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
+from django.urls import reverse
+import random
 def index(request):
-    post = query.get_post(request,end = 50)
+    post = query.get_post(request,end = 20)
     cont_dict = {'posts':post['post'],
                  'holes':query.get_hole()['hole'],
                  'users':query.get_user(),
@@ -19,7 +21,14 @@ def create_hole(request):
         if request.method == 'POST':
             form = forms.CreateHoleForm(request.POST)
             if form.is_valid():
-                hole_stat = query.create_hole(request.user.get_username(),form.cleaned_data['hole'])
+                kwarg = {}
+                # print(request.POST)
+                if 'hole_pic' in request.FILES:
+                    fileName = request.FILES['hole_pic'].name
+                    request.FILES['hole_pic'].name = str(random.randint(1,10000)*random.randint(1,10000)) + fileName[fileName.rfind('.'):]
+                    kwarg['hole_pic'] =  request.FILES['hole_pic']
+                    # hole_pic = request.FILES['hole_pic']
+                hole_stat = query.create_hole(request.user.get_username(),form.cleaned_data['hole'],form.cleaned_data['hole_description'],**kwarg)
                 if  not hole_stat:
                     print('hole already exist')
                 else:
@@ -36,7 +45,12 @@ def create_post(request):
         if request.method == 'POST':
             form = forms.CreatePostForm(request.POST)
             if form.is_valid():
-                query.create_post(request.user.get_username(),form.cleaned_data['hole'],form.cleaned_data['post'])
+                kwarg = {}
+                if 'image' in request.FILES:
+                    fileName = request.FILES['image'].name
+                    request.FILES['image'].name = str(random.randint(1,10000)*random.randint(1,10000)) + fileName[fileName.rfind('.'):]
+                    kwarg['image'] =  request.FILES['image']
+                query.create_post(request.user.get_username(),form.cleaned_data['hole'],form.cleaned_data['post'],form.cleaned_data['title'],**kwarg)
                 return HttpResponse("posted")
             # AnonymusUser
         else:
@@ -76,3 +90,16 @@ def get_user(request,slug):
         return render(request,'forum/users.html',cont_dict)
     else:
         return HttpResponse("user dont exist")
+
+# @login_required
+def set_vote(request,is_up,pk):
+    if is_up == 'up':
+        up = True
+    elif is_up == 'down':
+        up = False
+    resp = query.set_vote_by_pk(request,up,pk)
+    if resp == 0:
+        # return HttpResponse("voted")
+        return HttpResponseRedirect(reverse('index'))
+    else:
+        return HttpResponse("error")

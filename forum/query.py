@@ -33,7 +33,7 @@ def get_post(request,start = 0,end = 10,user = None,hole = None):
         else:
             v = None
         post_new['post'].append([i,
-                                 PostVoteCount.objects.filter(post = i).count(),
+                                 PostVoteCount.objects.filter(post = i,is_up = True).count() - PostVoteCount.objects.filter(post = i,is_up = False).count(),
                                  v])
         # count.append(PostVoteCount.objects.filter(post = i).count())
         # is_voted.append(PostVoteCount.objects.filter(post = i,user = auth_user))
@@ -61,22 +61,22 @@ def get_user(start = 0,end = 10):
     return UserPortfolio.objects.all()[start:end]
 
 # @login_required
-def create_hole(username,hole):
+def create_hole(username,hole,description,**kwarg):
     if Hole.objects.filter(hole = hole).exists() == False:
         user = User.objects.get(username = username)
-        h = Hole.objects.create(user = user,hole = hole)
+        h = Hole.objects.create(user = user,hole = hole,hole_description = description,**kwarg)
         h.save()
         return True
     else:
         return False
             # already exist
 
-def create_post(username,hole,post):
+def create_post(username,hole,post,title,**kwarg):
     if Hole.objects.filter(hole = hole).exists() == False:
         create_hole(username,hole)
     h = Hole.objects.get(hole = hole)
     user = User.objects.get(username = username)
-    p = Post.objects.create(user = user,hole = h,post = post)
+    p = Post.objects.create(user = user,hole = h,post = post,title = title,**kwarg)
     p.save()
 
 # def get_profile(username)
@@ -96,3 +96,24 @@ def get_user_by_username(username):
 # def get_votes_by_post_pk(pk): # list
 # #     votes = PostVoteCount.objects
 # def get_all_post_info(request,)
+
+def set_vote_by_pk(request,up,pk):
+    # truth_table = [None,True]
+    if Post.objects.filter(pk = pk).exists():
+        user = User.objects.get(username = request.user.get_username())
+        post = Post.objects.get(pk = pk)
+        if PostVoteCount.objects.filter(user = user,post = post).exists():
+            vote = PostVoteCount.objects.get(user = user,post = post)
+            # vote.is_up = truth_table[up^vote.is_up]&up
+            print('-=-=-=-=-=-=-=-=-=-=-=-=')
+            if vote.is_up == up:
+                vote.delete()
+            else:
+                vote.is_up = not vote.is_up
+                vote.save()
+
+        else:
+            PostVoteCount.objects.create(user = user,post = post,is_up = up)
+        return 0
+    else:
+        return 1

@@ -18,6 +18,9 @@ from django.urls import path,include
 from authentication import views
 import forum.views
 
+from django.conf.urls.static import static # new
+from django.conf import settings # new
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +32,8 @@ urlpatterns = [
     path('forum/', include('forum.urls')),
     # path('create_hole/', forum.views.create_hole,name = 'create_hole'),
     # path('create_post/', forum.views.create_post,name = 'create_post'),
+    # path('media/', forum.views.create_post,name = 'create_post'),
 ]
+
+if settings.DEBUG: # new
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
