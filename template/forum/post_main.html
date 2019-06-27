@@ -6,9 +6,9 @@
             <div class="card-header">
                 <div class="row">
                 
-                {% if post.image %}
+                {% comment %} {% if post.image %}
                 <img src = "{{post.image.url}}">                
-                {% endif %}
+                {% endif %} {% endcomment %}
                 
                     <div class="col-md-1" style="border:1px solid black">
                     {% comment %} <h1>{% url 'forum/vote/up'|add:post.0.pk %}</h1> {% endcomment %}
@@ -29,6 +29,14 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-11">
+
+                {% if post.image %}
+                <div class = "jumbotron">
+                <a href = "{{post.0.image.url}}">
+                <img class = "img-fluid" src = "{{post.image.url}}">     
+                </a>
+                </div>         
+                {% endif %}
                         {{post.post}}
                     </div>
                 </div>
