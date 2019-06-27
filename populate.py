@@ -3,6 +3,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE","MLForum.settings")
 
 import django
+import forum.query as query
 django.setup()
 
 import random
@@ -48,7 +49,21 @@ def gen_fake_votes():
                                 user = u,
                                 is_up = gen_random_bool()
                         )
+def get_fake_reply():
+        post_list = Post.objects.filter(reply_id = 0).order_by('creation_datetime')[0:100]
+        for i in range(100):
+                post = post_list[random.randint(0,len(post_list)-1)].pk
+                user = get_user()
+                hole = get_hole()
+                reply = Post.objects.create(user = user,hole = hole,reply_id = post,post = fakergen.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None))
 
+def get_fake_reply_reply():
+        post_list = Post.objects.exclude(reply_id = 0).order_by('creation_datetime')[0:100]
+        for i in range(100):
+                post = post_list[random.randint(0,len(post_list)-1)].pk
+                user = get_user()
+                hole = get_hole()
+                reply = Post.objects.create(user = user,hole = hole,reply_id = post,post = fakergen.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None))
 # gen_fake_hole()
 # gen_fake_post()
 # for i in range(10):

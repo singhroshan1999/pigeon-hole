@@ -26,7 +26,7 @@
                     &oplus;<a href = "/forum/u/{{post.0.user.username}}">{{post.0.user.username}}</a>
                     &oplus;{{post.0.creation_datetime}}
                     <br/>
-                    <p>{{post.0.title}}</p>
+                    <a href = "/forum/post/{{post.0.pk}}"><p>{{post.0.title}}</p></a>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer"></div>
+            <div class="card-footer">{{post.0.pk}}</div>
         </div>
         {% endfor %}
         {% comment %} end repeat {% endcomment %}

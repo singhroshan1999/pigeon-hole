@@ -11,5 +11,7 @@ urlpatterns = [
     path('u/<slug:slug>',views.get_user),
     path('temp',views.temp,name = 'temp'),
     path('vote/<slug:is_up>/<slug:pk>',views.set_vote),
+    path('post/<slug:pk>',views.get_post_tree),
+    path('reply/<slug:pk>',views.set_reply),
     # # path('login',views.user_login,name = 'login'),
 ]

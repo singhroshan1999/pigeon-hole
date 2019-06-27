@@ -18,3 +18,6 @@ class CreatePostForm(forms.ModelForm):
     class Meta():
         model = Post
         fields = ('hole','title','image','post')
+
+class CreateReplyForm(forms.Form):
+    reply = forms.CharField(label = 'enter reply')

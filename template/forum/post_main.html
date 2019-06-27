@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                
+                {% if post.image %}
+                <img src = "{{post.image.url}}">                
+                {% endif %}
+                
+                    <div class="col-md-1" style="border:1px solid black">
+                    {% comment %} <h1>{% url 'forum/vote/up'|add:post.0.pk %}</h1> {% endcomment %}
+                    <small class = "{% if is_up == True %}text-success {% else %} text-danger{% endif %}" onclick = "window.location.replace('/forum/vote/up/{{post.pk}}')">up&nbsp;&nbsp;&nbsp;</small>
+                    <small>{{count}}</small>
+                    <small class = "{% if is_up == False %}text-success {% else %} text-danger{% endif %}" onclick = "window.location.replace('/forum/vote/down/{{post.pk}}')">Down&nbsp;&nbsp;&nbsp;</small>
+                    </div>
+                    <div class="col-md-11">
+                    board:<a href = "/forum/h/{{post.hole.hole}}">{{post.hole.hole}}</a>
+                    &oplus;<a href = "/forum/u/{{post.user.username}}">{{post.user.username}}</a>
+                    &oplus;{{post.creation_datetime}}
+                    <br/>
+                    <a href = "/forum/post/{{post.pk}}"><p>{{post.title}}</p></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11">
+                        {{post.post}}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">{{post.pk}}</div>
+        </div>
+                    <a href="/forum/reply/{{post.pk}}">comment</a>
+
+        <div class = "container jumbotron">
+        {% for r in reply %}
+        <p>
+        <h4>{{r.0.post}}</h4>
+        <ol>
+        {% for rr in r.1 %}
+        <li><h7>{{rr.post}}</h7><br/>
+        {% endfor %}
+        </ol>
+        <a href="/forum/reply/{{r.0.pk}}">reply</a>
+        <hr/>
+        {% endfor %}
+        </div>
+        {% comment %} <code>{{verbose}}</code> {% endcomment %}
+{% endblock content %}

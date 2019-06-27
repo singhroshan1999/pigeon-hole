@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from forum import query,forms
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
@@ -103,3 +103,34 @@ def set_vote(request,is_up,pk):
         return HttpResponseRedirect(reverse('index'))
     else:
         return HttpResponse("error")
+
+
+def get_post_tree(request,pk):
+    # con_dict = {}
+    reply_tree = query.get_reply_tree_by_pk(pk)
+    print(reply_tree)
+    # post = Post.objects.get(pk = pk)
+    post_data = query.get_post(request,pk = pk)['post'][0]
+    print(post_data)
+    # print('-=-=-=-=-=-=--=')
+    return render(request,'forum/post_main.html',{'post':post_data[0],
+                                                  'count':post_data[1],
+                                                  'is_up':post_data[2],
+                                                  'reply':reply_tree,
+                                                  'verbose':reply_tree
+                                                  }
+                  )
+def set_reply(request,pk):
+    if request.method == 'POST':
+        form = forms.CreateReplyForm(request.POST)
+        if form.is_valid():
+            if query.set_reply_by_pk(request,pk,form.cleaned_data['reply']) == 0:
+
+                return redirect(query.get_parent_post(pk))
+            else:
+                return HttpResponse('error in setting reply')
+        else:
+            return HttpResponse('form invalid')
+    else:
+        form = forms.CreateReplyForm()
+        return render(request,'forum/reply.html',{'form':form})

@@ -3,9 +3,9 @@ from authentication.models import UserPortfolio
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-def get_post(request,start = 0,end = 10,user = None,hole = None):
+def get_post(request,start = 0,end = 10,user = None,hole = None,pk = None):
     post = {}
-    if user is None and hole is None:
+    if user is None and hole is None and pk is None:
         post['post'] = Post.objects.filter(reply_id = 0).order_by('-creation_datetime')[start:end]
     elif user is not None and hole is not None:
         if User.objects.filter(username = user).exists() and Hole.objects.filter(hole = hole).exists():
@@ -20,6 +20,10 @@ def get_post(request,start = 0,end = 10,user = None,hole = None):
         if Hole.objects.filter(hole = hole).exists():
             hole = Hole.objects.get(hole = hole)
             post['post'] = Post.objects.filter(reply_id = 0,hole = hole).order_by('-creation_datetime')[start:end]
+    elif pk is not None:
+        if Post.objects.filter(pk = pk).exists():
+            post['post'] = [Post.objects.get(pk = pk)]
+            
     count = []
     is_voted = []
     if User.objects.filter(username = request.user.get_username()).exists():
@@ -117,3 +121,32 @@ def set_vote_by_pk(request,up,pk):
         return 0
     else:
         return 1
+
+def get_reply_tree_by_pk(pk):
+    # post = Post.objects.get(pk = pk)
+    reply_list = Post.objects.filter(reply_id = pk).order_by('-creation_datetime')
+    reply_all = []
+    for reply in reply_list:
+        curr_reply = [reply]
+        curr_reply.append(Post.objects.filter(reply_id = reply.pk).order_by('-creation_datetime'))
+        reply_all.append(curr_reply)
+    return reply_all
+
+def set_reply_by_pk(request,pk,post):
+    if Post.objects.filter(pk = pk).exists():
+        Post.objects.create(
+            user = User.objects.get(username = request.user.get_username()),
+            hole = get_hole_by_name('holehole'),
+            title = '',
+            post = post,
+            reply_id = pk
+        )
+        return 0
+    return 1
+
+def get_parent_post(pk):
+    
+    post_redir = Post.objects.get(pk = pk)
+    if post_redir.reply_id != 0:
+        post_redir = Post.objects.get(pk = post_redir.reply_id)
+    return '/forum/post/'+str(post_redir.pk)

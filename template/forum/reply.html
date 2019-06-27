@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% extends '../base.html' %}
+
+{% block content %}
+
+<form method = "POST">
+{{form}}
+{% csrf_token %}
+<input type = "submit">
+</form>
+
+{% endblock content %}
