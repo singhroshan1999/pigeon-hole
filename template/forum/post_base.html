@@ -2,9 +2,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br/><br/>
 <div class="row">
     <div class="col-md-9">
-        <hr />
         {% comment %} repeat {% endcomment %}
         {% for post in posts %}
         <div class="card">
@@ -19,9 +19,9 @@
                     {% comment %} <h1>{% url 'forum/vote/up'|add:post.0.pk %}</h1> {% endcomment %}
                     
                     
-                    <span class = "d-flex justify-content-center {% if post.2 == True %}text-success {% else %} text-info{% endif %}" onclick = "window.location.replace('/forum/vote/up/{{post.0.pk}}')"><i class="fas fa-chevron-up"></i></span>
+                    <span style = "font-size:24px" class = "d-flex justify-content-center {% if post.2 == True %}text-success {% else %} text-info{% endif %}" onclick = "window.location.replace('/forum/vote/up/{{post.0.pk}}')"><i class="fas fa-chevron-up"></i></span>
                     <small class="d-flex justify-content-center">{{post.1}}</small>
-                    <span class = "d-flex justify-content-center {% if post.2 == False %}text-danger {% else %} text-info{% endif %}" onclick = "window.location.replace('/forum/vote/down/{{post.0.pk}}')"><i class="fas fa-chevron-down"></i></span>
+                    <span style = "font-size:24px" class = "d-flex justify-content-center {% if post.2 == False %}text-danger {% else %} text-info{% endif %}" onclick = "window.location.replace('/forum/vote/down/{{post.0.pk}}')"><i class="fas fa-chevron-down"></i></span>
                     </div>
                     <div class="col-md-11">
                     <kbd>Board<span class = "badge badge-primary text-body"><a href = "/forum/h/{{post.0.hole.hole}}" class = "a_white" style = "font-size:12px">{{post.0.hole.hole}}</a></span></kbd>

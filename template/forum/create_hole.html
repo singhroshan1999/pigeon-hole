@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 {% extends '../base.html' %}
 {% block content %}
+<br/><br/>
+<div class = "container-fluid">
 <form method = "POST" enctype = "multipart/form-data">
 {{form.as_p}}
 {% csrf_token %}
-<input type = "submit"/>
+<button type="submit" class="btn btn-primary">Submit</button>
 </form>
+</div>
 {% endblock content %}

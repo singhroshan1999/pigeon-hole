@@ -2,9 +2,20 @@
 {% extends 'forum/post_base.html' %}
 
 {% block post_base %}
-        <hr />
-        <div class="jumbotron">
-        {{get_user.username}} | 
+        <div class="jumbotron" style = "background:#eeeeee33;border:1px solid #eee;border-radius:5px">
+            <h3>
+            <span class = "badge badge-warning text-body">
+            <a href = "/forum/u/{{get_user.user.username}}" class = "a_white">/u/{{get_user.user.username}}</a><br />
+            </span>
+             </h3>
+            {% if get_user.profile_pic %}
+                <img src = "{{get_user.profile_pic.url}}" class="img-fluid img-thumbnail">                
+            {% endif %}
+            <span class = "badge badge-info">{{get_user.user.first_name}} {{get_user.user.last_name}}</span><br/>
+            <span class = "badge badge-info"><a href="{{get_user.portfolio_url}}" class = "a_white">{{get_user.portfolio_url}}</a></span><br/>
+            <span class = "badge badge-info"><a href = "mailto:{{get_user.user.email}}" class = "a_white">{{get_user.user.email}}</a></span>
+
+
         </div>
 
 {% endblock post_base %}

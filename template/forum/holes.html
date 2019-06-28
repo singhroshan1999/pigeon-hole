@@ -2,13 +2,25 @@
 {% extends 'forum/post_base.html' %}
 
 {% block post_base %}
-        <hr />
-        <div class="jumbotron">
+        <div class="jumbotron" style = "background:#eeeeee33;border:1px solid #eee;border-radius:5px">
+            <h3>
+            <span class = "badge badge-primary text-body">
+            <a href = "/forum/h/{{hole.hole}}" class = "a_white">/h/{{hole.hole}}</a><br />
+            </span>
+             </h3>
+             <h5> <span class = "badge badge-dark">User
+             <span class = "badge badge-warning">
+            <a href = "/forum/u/{{hole.user.username}}" class = "a_white">{{hole.user.username}}</a></br>
+            </span></span>
+            </h5>
+             {% comment %} <a href = "/forum/u/{{hole.user.username}}">{{hole.user.username}}</a><br/> {% endcomment %}
+            <span class = "badge badge-light border">{{hole.creation_date}} </span> <br/>
+
             {% if hole.hole_pic %}
-                <img src = "{{hole.hole_pic.url}}">                
+                <img src = "{{hole.hole_pic.url}}" class="img-fluid img-thumbnail">                
             {% endif %}
-            {{hole.hole}} | <a href = "/forum/u/{{hole.user.username}}">{{hole.user.username}}</a><br/>
-            {{hole.creation_date}} | <br/>
-            <p>{{hole.hole_description}}</p>
+            <br/>
+            <p style = "font-size:14px">{{hole.hole_description}}</p>
+
         </div>
 {% endblock post_base %}

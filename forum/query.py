@@ -93,7 +93,7 @@ def get_hole_by_name(hole):
 
 def get_user_by_username(username):
     if User.objects.filter(username = username).exists():
-        return User.objects.get(username = username)
+        return UserPortfolio.objects.get(user = User.objects.get(username = username))
     else:
         pass # user dont exist
 

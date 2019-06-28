@@ -2,16 +2,21 @@
 {% extends 'forum/post_base.html' %}
 
 {% block post_base %}
-        <hr />
         <div class="jumbotron">
+        <h5>Top <kbd>Boards</kbd></h5>
             {% for hole in holes %}
-            <a href = "/forum/h/{{hole.hole}}">{{hole.hole}}</a><br />
+            <span class = "badge badge-primary text-body">
+            <a href = "/forum/h/{{hole.hole}}" class = "a_white">{{hole.hole}}</a><br />
+            </span>
             {% endfor %}
 
         </div>
         <div class="jumbotron">
+        <h5>Top <span class = "badge badge-warning text-white">Users</span></h5>
             {% for u in users %}
-            <a href = "/forum/u/{{u.user.username}}">{{u.user.username}}</a></br>
+            <span class = "badge badge-warning">
+            <a href = "/forum/u/{{u.user.username}}" class = "a_white">{{u.user.username}}</a></br>
+            </span>
             {% endfor %}
         </div>
 
