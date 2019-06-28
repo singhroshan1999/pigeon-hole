@@ -1,51 +1,6 @@
 <!DOCTYPE html>
 {% extends 'forum/post_base.html' %}
 
-{% comment %} {% block content %}
-<div class="row">
-    <div class="col-md-9">
-        <hr />
-        {% for post in posts %}
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-md-1" style="border:1px solid black">
-                    <a href = "#"><small>up</small></a>
-                    <small>123</small>
-                    <a href = "#"><small>down</small></a>
-                    </div>
-                    <div class="col-md-11">
-                    board:<a href = "/forum/h/{{post.hole.hole}}">{{post.hole.hole}}</a>
-                    &oplus;{{post.user.username}}
-                    &oplus;{{post.creation_datetime}}
-                    <br/>
-                    <p>{{post.title}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-11">
-                        {{post.post}}
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer"></div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="col-md-3">
-        <hr />
-        <div class="jumbotron">
-            {{hole.hole}} | {{hole.user.username}}<br/>
-            {{hole.creation_date}} | <br/>
-            <p>{{hole.hole_description}}</p>
-        </div>
-    </div>
-</div>
-{% endblock content %} {% endcomment %}
-
 {% block post_base %}
         <hr />
         <div class="jumbotron">

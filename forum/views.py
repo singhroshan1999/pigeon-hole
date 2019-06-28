@@ -11,8 +11,8 @@ def index(request):
                 #  'votes':post['votes'],
                 #  'is_voted':post['is_voted']
                  }
-    print(request.user)
-    print(cont_dict)
+    # print(request.user)
+    # print(cont_dict)
     return render(request,'forum/posts.html',cont_dict)
 
 def create_hole(request):
@@ -37,7 +37,7 @@ def create_hole(request):
         else:
             return render(request,'forum/create_hole.html',{'form':form})
     else:
-        pass
+        return redirect('/auth/login')
 
 def create_post(request):
     if request.user.is_authenticated:
@@ -56,7 +56,7 @@ def create_post(request):
         else:
             return render(request,'forum/create_post.html',{'form':form})
     else:
-        pass
+        return redirect('/auth/login')
     
 def temp(request):
     return render(request,'index.html')
@@ -93,25 +93,27 @@ def get_user(request,slug):
 
 # @login_required
 def set_vote(request,is_up,pk):
-    if is_up == 'up':
-        up = True
-    elif is_up == 'down':
-        up = False
-    resp = query.set_vote_by_pk(request,up,pk)
-    if resp == 0:
-        # return HttpResponse("voted")
-        return HttpResponseRedirect(reverse('index'))
+    if request.user.is_authenticated: 
+        if is_up == 'up':
+            up = True
+        elif is_up == 'down':
+            up = False
+        resp = query.set_vote_by_pk(request,up,pk)
+        if resp == 0:
+            # return HttpResponse("voted")
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return HttpResponse("error")
     else:
-        return HttpResponse("error")
-
+        return redirect('/auth/login')
 
 def get_post_tree(request,pk):
     # con_dict = {}
     reply_tree = query.get_reply_tree_by_pk(pk)
-    print(reply_tree)
+    # print(reply_tree)
     # post = Post.objects.get(pk = pk)
     post_data = query.get_post(request,pk = pk)['post'][0]
-    print(post_data)
+    # print(post_data)
     # print('-=-=-=-=-=-=--=')
     return render(request,'forum/post_main.html',{'post':post_data[0],
                                                   'count':post_data[1],
@@ -121,16 +123,19 @@ def get_post_tree(request,pk):
                                                   }
                   )
 def set_reply(request,pk):
-    if request.method == 'POST':
-        form = forms.CreateReplyForm(request.POST)
-        if form.is_valid():
-            if query.set_reply_by_pk(request,pk,form.cleaned_data['reply']) == 0:
+    if request.user.is_authenticated:    
+        if request.method == 'POST':
+            form = forms.CreateReplyForm(request.POST)
+            if form.is_valid():
+                if query.set_reply_by_pk(request,pk,form.cleaned_data['reply']) == 0:
 
-                return redirect(query.get_parent_post(pk))
+                    return redirect(query.get_parent_post(pk))
+                else:
+                    return HttpResponse('error in setting reply')
             else:
-                return HttpResponse('error in setting reply')
+                return HttpResponse('form invalid')
         else:
-            return HttpResponse('form invalid')
+            form = forms.CreateReplyForm()
+            return render(request,'forum/reply.html',{'form':form})
     else:
-        form = forms.CreateReplyForm()
-        return render(request,'forum/reply.html',{'form':form})
+        return redirect('/auth/login')

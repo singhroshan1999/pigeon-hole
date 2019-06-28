@@ -8,25 +8,27 @@
         {% comment %} repeat {% endcomment %}
         {% for post in posts %}
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style = "background-color:#fff">
                 <div class="row">
                 
                 {% comment %} {% if post.0.image %}
                 <img src = "{{post.0.image.url}}">                
                 {% endif %} {% endcomment %}
                 
-                    <div class="col-md-1" style="border:1px solid black">
+                    <div class="col-md-1" style="border:0px solid black">
                     {% comment %} <h1>{% url 'forum/vote/up'|add:post.0.pk %}</h1> {% endcomment %}
-                    <small class = "{% if post.2 == True %}text-success {% else %} text-danger{% endif %}" onclick = "window.location.replace('/forum/vote/up/{{post.0.pk}}')">up&nbsp;&nbsp;&nbsp;</small>
-                    <small>{{post.1}}</small>
-                    <small class = "{% if post.2 == False %}text-success {% else %} text-danger{% endif %}" onclick = "window.location.replace('/forum/vote/down/{{post.0.pk}}')">Down&nbsp;&nbsp;&nbsp;</small>
+                    
+                    
+                    <span class = "d-flex justify-content-center {% if post.2 == True %}text-success {% else %} text-info{% endif %}" onclick = "window.location.replace('/forum/vote/up/{{post.0.pk}}')"><i class="fas fa-chevron-up"></i></span>
+                    <small class="d-flex justify-content-center">{{post.1}}</small>
+                    <span class = "d-flex justify-content-center {% if post.2 == False %}text-danger {% else %} text-info{% endif %}" onclick = "window.location.replace('/forum/vote/down/{{post.0.pk}}')"><i class="fas fa-chevron-down"></i></span>
                     </div>
                     <div class="col-md-11">
-                    board:<a href = "/forum/h/{{post.0.hole.hole}}">{{post.0.hole.hole}}</a>
-                    &oplus;<a href = "/forum/u/{{post.0.user.username}}">{{post.0.user.username}}</a>
-                    &oplus;{{post.0.creation_datetime}}
-                    <br/>
-                    <a href = "/forum/post/{{post.0.pk}}"><p>{{post.0.title}}</p></a>
+                    <kbd>Board<span class = "badge badge-primary text-body"><a href = "/forum/h/{{post.0.hole.hole}}" class = "a_white" style = "font-size:12px">{{post.0.hole.hole}}</a></span></kbd>
+                    <span class = "text-grey">|&nbsp;</span><span class="badge badge-warning"><a href = "/forum/u/{{post.0.user.username}}" class="a_white">{{post.0.user.username}}</a></span>
+                    <span class = "text-grey">|&nbsp;</span><span class="badge badge-light">{{post.0.creation_datetime}}</span>
+                    <br/><br/>
+                    <a href = "/forum/post/{{post.0.pk}}" class = "a_title"><p>{{post.0.title}}</p></a>
                     </div>
                 </div>
             </div>
@@ -47,6 +49,7 @@
             </div>
             <div class="card-footer">{{post.0.pk}}</div>
         </div>
+        <br/><br/><br/><br/>
         {% endfor %}
         {% comment %} end repeat {% endcomment %}
     </div>

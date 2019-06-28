@@ -109,7 +109,7 @@ def set_vote_by_pk(request,up,pk):
         if PostVoteCount.objects.filter(user = user,post = post).exists():
             vote = PostVoteCount.objects.get(user = user,post = post)
             # vote.is_up = truth_table[up^vote.is_up]&up
-            print('-=-=-=-=-=-=-=-=-=-=-=-=')
+            # print('-=-=-=-=-=-=-=-=-=-=-=-=')
             if vote.is_up == up:
                 vote.delete()
             else:
